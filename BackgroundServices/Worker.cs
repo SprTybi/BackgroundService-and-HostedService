@@ -22,17 +22,29 @@ namespace BackgroundServices
 
 
 
+
+//short running
+
 public class HostedWorker : IHostedService
 {
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"Hosted running at: {DateTimeOffset.Now}");
-
-        return Task.CompletedTask;
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            Console.WriteLine($"Hosted running at: {DateTimeOffset.Now}");
+            await Task.Delay(1000, cancellationToken);
+        }
     }
+    // public Task StartAsync(CancellationToken cancellationToken)
+    //{
+    //    Console.WriteLine($"Hosted running at: {DateTimeOffset.Now}");
+
+    //    return Task.CompletedTask;
+    //}
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"---------Hosted running at: {DateTimeOffset.Now} Ended------------");
+        return Task.CompletedTask;
     }
 }
