@@ -27,13 +27,17 @@ namespace BackgroundServices
 
 public class HostedWorker : IHostedService
 {
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        while (!cancellationToken.IsCancellationRequested)
+        Task.Run(async () =>
         {
-            Console.WriteLine($"Hosted running at: {DateTimeOffset.Now}");
-            await Task.Delay(1000, cancellationToken);
-        }
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                Console.WriteLine($"Hosted running at: {DateTimeOffset.Now}");
+                await Task.Delay(1000, cancellationToken);
+            }
+        });
+        return Task.CompletedTask;
     }
     // public Task StartAsync(CancellationToken cancellationToken)
     //{
